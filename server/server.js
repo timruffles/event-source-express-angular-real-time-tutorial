@@ -88,7 +88,7 @@ function fetchRoom(req, res, next) {
     res.locals.room = room;
     next();
   } else {
-    res.status(404),end();;
+    res.status(404).end();
   }
 }
 
