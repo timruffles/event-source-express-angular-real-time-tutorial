@@ -4,7 +4,7 @@ When people think real-time their thoughts immediately leap to web-sockets. For 
 
 EventSource is a HTTP based protocol that allows one-way evented communication from the server to the client. It avoids the overhead of polling, provides seamless reconnection without any code on your part and has an incredibly simple API.
 
-I'll take you through the server-sent events related parts of both the client and server-side of a chat application implemented via EventSource. We'll use AngularJS in the client and NodeJS in the server.
+I'll take you through the server-sent events related parts of both the client and server-side of a chat application implemented via EventSource. We'll use AngularJS in the client and NodeJS in the server. The [full source](https://github.com/timruffles/chat-event-source) is available to read too.
 
 First - let's check out the EventSource API itself:
 
