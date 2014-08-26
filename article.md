@@ -4,7 +4,7 @@ When people think real-time their thoughts immediately leap to web-sockets. For 
 
 EventSource is a HTTP based protocol that allows one-way evented communication from the server to the client. It avoids the overhead of polling, provides seamless reconnection without any code on your part and has an incredibly simple API.
 
-I'll take you through both the client and server-side of a chat application implemented via EventSource. We'll use AngularJS in the client and NodeJS in the server.
+I'll take you through the server-sent events related parts of both the client and server-side of a chat application implemented via EventSource. We'll use AngularJS in the client and NodeJS in the server.
 
 First - let's check out the EventSource API itself:
 
@@ -43,7 +43,7 @@ event: chat
 data: {"message":"this is fun","userId":1,"createdAt":"2014-08-26T17:06:12.521Z"}
 ```
 
-Simplicity itself! We simply have to set the `Content-Type` to `text/event-stream`, disable caching and tell the browser to expect `chunked` encoding. Each even is sent as a number of headers (`event:`, `data:`) separated by new-lines, with a double new-line between events.
+Simplicity itself! We simply have to set the `Content-Type` to `text/event-stream`, disable caching and tell the browser to expect `chunked` encoding. Each event is sent as a number of headers (`event:`, `data:`) separated by new-lines, with a double new-line between events.
 
 Let's implement that with NodeJS. I've chosen the `express` HTTP server library as it's simple and commonly-used. If you've not used it before, it's just a matter of writing handler functions that use the `request` and `response` parameters (usually shortened to `req` and `res`) to respond to HTTP requests. Here's a simple one for creating a user:
 
@@ -59,7 +59,7 @@ server.post("/users", function(req, res) {
 });
 ```
 
-You can see we're accepting `POST /users` requests, and asynchronsly responding based on the result of creating a user.
+You can see we're accepting `POST /users` requests, and asynchronously responding based on the result of creating a user.
 
 Implementing the real-time notifications for chat messages is simple. First we'll write an implementation of the server-side of the server-sent events spec:
 
