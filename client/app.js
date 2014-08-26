@@ -10,7 +10,7 @@ angular.module("chat", [])
   .factory("chats", chats);
 
 function ChatRoom($scope, chats, users) {
-  $scope.user = users.create();
+  $scope.user = users.loginOrSignup();
 
   $scope.user.$promise.then(function() {
     $scope.chats = chats.forRoom("demo", $scope.user.id);
@@ -30,17 +30,29 @@ function ChatRoom($scope, chats, users) {
   }
 }
 
-function users($http) {
-  return {
+function users($http, $q) {
+  var api = {
     create: function() {
       var user = {};
       user.$promise = $http.post('/users')
         .success(function(data) {
+          localStorage.userId = data.id;
           user.id = data.id;
         })
       return user;
+    },
+    me: function() {
+      return {id: parseInt(localStorage.userId), $promise: $q.when(true)};
+    },
+    loginOrSignup: function() {
+      if(localStorage.userId) {
+        return this.me();
+      }
+      return api.create();
     }
   }
+
+  return api;
 }
 
 function chats($http, $rootScope, EventSource) {
@@ -57,10 +69,9 @@ function chats($http, $rootScope, EventSource) {
       }
     });
 
-    // initial chats
-    $http.get('/rooms/' + id + '/chats')
-      .success(function(sent) {
-        sent.forEach(function(chat) {
+    retrieveInitial(id)
+      .then(function(existing) {
+        existing.forEach(function(chat) {
           chat.createdAt = new Date(Date.parse(chat.createdAt));
           chats.push(chat);
         });
@@ -88,6 +99,14 @@ function chats($http, $rootScope, EventSource) {
     }
 
     return chats;
+  }
+
+  function retrieveInitial(id) {
+    // initial chats
+    return $http.get('/rooms/' + id + '/chats')
+      .then(function(result) {
+        return result.data;
+      });
   }
 
   return {
@@ -118,5 +137,4 @@ function refocusOn() {
     }
   }
 }
-
 

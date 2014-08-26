@@ -40,6 +40,15 @@ server.get("/rooms/:id/events", fetchRoom, function(req, res) {
   }
 });
 
+server.get("/users/:id", function(req, res) {
+  users.get(req.params.id, function(err, user) {
+    if(err) {
+      return res.send(404);
+    }
+
+    res.send(user);
+  });
+});
 server.post("/users", function(req, res) {
   users.create(function(err, user) {
     if(err) {
