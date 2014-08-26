@@ -102,6 +102,10 @@ server.get("/rooms/:id/events", fetchRoom, function(req, res) {
 
 We're proxying events from a NodeJS [`EventEmitter`](http://nodejs.org/api/events.html) through to the browser in 20 lines of code! A fully-featured implementation would only need the ability to send through the last event ID the client had received, and we'd have seamless reconnection functionality.
 
+Once we boot up the server we have a functional, if incredibly simple, chat application!
+
+![simple chat with nodejs, angularjs and server-sent events](https://raw.githubusercontent.com/timruffles/chat-event-source/master/article-assets/chat.png)
+
 I hope this quick run-down whetted your appetite for `EventSource`. I think it's one of those rare browser APIs that leaves you thankful to its designers for making your life easy. Please check out the [completed example](https://github.com/timruffles/chat-event-source) and have a play!
 
 
