@@ -28,7 +28,7 @@ server.post("/rooms/:id/chats", fetchRoom, function(req, res) {
 
 server.get("/rooms/:id/events", fetchRoom, function(req, res) {
   var room = res.locals.room;
-  var sse = startSees(res);
+  var sse = startSses(res);
   room.on("chat", sendChat);
       
   req.once("end", function() {
@@ -67,7 +67,7 @@ if(require.main === module) {
          });
 }
 
-function startSees(res) {
+function startSses(res) {
   res.writeHead(200, {
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache',
